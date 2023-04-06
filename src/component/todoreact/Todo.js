@@ -8,14 +8,24 @@ const Todo = () => {
 
 
   const addItem = (event) => {
-    // console.log(addItem);
     event.preventDefault();
     if (!inputData) {
       alert("plz fill the data");
     } else {
-      SetItems([...items, inputData]);
+      const myNewItemData={
+        id:new Date().getTime().toString(),
+        name:inputData,
+      }
+      SetItems([...items, myNewItemData]);
       SetInputData("");
     }
+  }
+  const deleteItem=(index)=>{
+    const updateItems=items.filter((currEle)=>{
+      return currEle.id !== index;
+    })
+    SetItems(updateItems);
+
   }
   return (
 
@@ -33,13 +43,13 @@ const Todo = () => {
             <i className="fa fa-plus add-btn" onClick={event=>addItem(event)}></i>
           </div>
           <div className='showItems'>
-            {items.map((currEle, index) => {
+            {items.map((currEle) => {
               return (
-                <div className='eachItem'>
-                  <h3>{currEle}</h3>
+                <div className='eachItem' key={currEle.id} >
+                  <h3>{currEle.name}</h3>
                   <div className='todo-btn'>
                     <i className="far fa-edit add-btn"></i>
-                    <i className="far fa-trash-alt add-btn"></i>
+                    <i className="far fa-trash-alt add-btn" onClick={()=>deleteItem(currEle.id)}></i>
                   </div>
                 </div>
               )
