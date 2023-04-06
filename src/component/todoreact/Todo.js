@@ -1,10 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Style.css';
+
+const getLocalData = () => {
+  const lists = localStorage.getItem("mytodolist");
+
+  if (lists) {
+    return JSON.parse(lists);
+  } else {
+    return [];
+  }
+}
+
 
 const Todo = () => {
   const [inputData, SetInputData] = useState("");
-  const [items, SetItems] = useState([]);
-  
+  const [items, SetItems] = useState(getLocalData());
+
 
 
   const addItem = (event) => {
@@ -12,32 +23,31 @@ const Todo = () => {
     if (!inputData) {
       alert("plz fill the data");
     } else {
-      const myNewItemData={
-        id:new Date().getTime().toString(),
-        name:inputData,
+      const myNewItemData = {
+        id: new Date().getTime().toString(),
+        name: inputData,
       }
       SetItems([...items, myNewItemData]);
       SetInputData("");
     }
   }
-  // const deleteItem=(index)=>{
-  //   const updateItems=items.filter((currEle)=>{
-  //     return currEle.id !== index;
-  //   })
-  //   SetItems(updateItems);
-  // }
 
-     const deleteItem=(index)=>{
-      const updateItems =items.filter((currEle)=>{
-        return currEle.id !==index;
-      })
-      SetItems(updateItems);
-     }
 
-     const removeAll=()=>{
-      SetItems([]);
-     }
-     
+  const deleteItem = (index) => {
+    const updateItems = items.filter((currEle) => {
+      return currEle.id !== index;
+    })
+    SetItems(updateItems);
+  }
+
+  const removeAll = () => {
+    SetItems([]);
+  }
+
+
+  useEffect(() => {
+    localStorage.setItem("mytodolist", JSON.stringify(items));
+  }, [items]);
   return (
 
     <div>
@@ -50,8 +60,8 @@ const Todo = () => {
             <figcaption>Add your List Here</figcaption>
           </figure>
           <div className='addItems'>
-            <input type='text' value={inputData} onChange={(event) => SetInputData(event.target.value)} placeholder='add item ✍️'/>
-            <i className="fa fa-plus add-btn" onClick={event=>addItem(event)}></i>
+            <input type='text' value={inputData} onChange={(event) => SetInputData(event.target.value)} placeholder='add item ✍️' />
+            <i className="fa fa-plus add-btn" onClick={event => addItem(event)}></i>
           </div>
           <div className='showItems'>
             {items.map((currEle) => {
@@ -60,7 +70,7 @@ const Todo = () => {
                   <h3>{currEle.name}</h3>
                   <div className='todo-btn'>
                     <i className="far fa-edit add-btn"></i>
-                    <i className="far fa-trash-alt add-btn" onClick={()=>deleteItem(currEle.id)}></i>
+                    <i className="far fa-trash-alt add-btn" onClick={() => deleteItem(currEle.id)}></i>
                   </div>
                 </div>
               )
