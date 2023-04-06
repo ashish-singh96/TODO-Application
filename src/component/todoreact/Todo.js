@@ -20,13 +20,24 @@ const Todo = () => {
       SetInputData("");
     }
   }
-  const deleteItem=(index)=>{
-    const updateItems=items.filter((currEle)=>{
-      return currEle.id !== index;
-    })
-    SetItems(updateItems);
+  // const deleteItem=(index)=>{
+  //   const updateItems=items.filter((currEle)=>{
+  //     return currEle.id !== index;
+  //   })
+  //   SetItems(updateItems);
+  // }
 
-  }
+     const deleteItem=(index)=>{
+      const updateItems =items.filter((currEle)=>{
+        return currEle.id !==index;
+      })
+      SetItems(updateItems);
+     }
+
+     const removeAll=()=>{
+      SetItems([]);
+     }
+     
   return (
 
     <div>
@@ -57,7 +68,7 @@ const Todo = () => {
 
           </div>
           <div className='showItems'>
-            <button className='btn effect04' data-sm-link-text='Remove All'> <span>Check List</span></button>
+            <button className='btn effect04' onClick={removeAll} data-sm-link-text='Remove All'> <span>Check List</span></button>
           </div>
         </div>
       </div>
