@@ -1,0 +1,11 @@
+.form{
+  display: flex;
+  width: 300px;
+  height: auto;
+  margin-top: 50px;
+  position: relative;
+ 
+}
+.btn{
+  margin-top: 40px;
+}
