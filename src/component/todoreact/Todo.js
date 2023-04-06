@@ -15,14 +15,28 @@ const getLocalData = () => {
 const Todo = () => {
   const [inputData, SetInputData] = useState("");
   const [items, SetItems] = useState(getLocalData());
-
+  const[isedititem,IsEditItem]=useState("");
+  const[togglebuttom, SetToggleButton]=useState(false);
 
 
   const addItem = (event) => {
     event.preventDefault();
     if (!inputData) {
       alert("plz fill the data");
-    } else {
+    } else if(inputData && togglebuttom ){
+        SetItems(
+          items.map((currEle) => {
+             if(currEle.id===isedititem){
+              return {...currEle,name:inputData}; 
+             }
+             return currEle;
+          })
+        )
+        SetInputData("");
+       IsEditItem(null);
+       SetToggleButton(false);
+    }
+    else {
       const myNewItemData = {
         id: new Date().getTime().toString(),
         name: inputData,
@@ -48,6 +62,17 @@ const Todo = () => {
   useEffect(() => {
     localStorage.setItem("mytodolist", JSON.stringify(items));
   }, [items]);
+
+
+  const editItem =(index)=>{
+       const item_todo_edited=items.find((currEle)=>{
+        return currEle.id==index;
+       })
+       SetInputData(item_todo_edited.name);
+       IsEditItem(index);
+       SetToggleButton(true);
+
+  }
   return (
 
     <div>
@@ -61,7 +86,10 @@ const Todo = () => {
           </figure>
           <div className='addItems'>
             <input type='text' value={inputData} onChange={(event) => SetInputData(event.target.value)} placeholder='add item ✍️' />
-            <i className="fa fa-plus add-btn" onClick={event => addItem(event)}></i>
+            {
+              togglebuttom ? (<i className="fa fa-edit add-btn" onClick={event => addItem(event)}></i>
+              ):<i className="fa fa-plus add-btn" onClick={event => addItem(event)}></i>
+            }
           </div>
           <div className='showItems'>
             {items.map((currEle) => {
@@ -69,7 +97,7 @@ const Todo = () => {
                 <div className='eachItem' key={currEle.id} >
                   <h3>{currEle.name}</h3>
                   <div className='todo-btn'>
-                    <i className="far fa-edit add-btn"></i>
+                    <i className="far fa-edit add-btn" onClick={()=>editItem(currEle.id)}></i>
                     <i className="far fa-trash-alt add-btn" onClick={() => deleteItem(currEle.id)}></i>
                   </div>
                 </div>
