@@ -1,23 +1,15 @@
-import React,{useRef} from 'react'
+import React,{useState} from 'react'
+
 
 const Practice = () => {
-    let inputRef=useRef(null);
-    let inputRef2=useRef(null);
-    function submitButton(event){
-        event.preventDefault();
-        console.log(inputRef.current.value);
-        console.log(inputRef2.current.value);
-    }
-    return (
-        <div>
-            <h1>UnControl Component</h1>
-            <form onSubmit={submitButton}>
-                <input ref={inputRef} type='text'></input><br></br><br></br>
-                <input ref={inputRef2} type='text'></input><br></br><br></br>
-                <button>Submit</button>
-            </form>
-        </div>
-    )
+    const[count,SetCount]=useState(0);
+  return (
+    <div>
+       <h1>Higher Order Component</h1>
+       <h1>{count}</h1>
+       <button onClick={()=>SetCount(count+1)}>Update</button>
+    </div>
+  )
 }
 
 export default Practice
